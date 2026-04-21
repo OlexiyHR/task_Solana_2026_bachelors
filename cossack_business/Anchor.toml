@@ -1,0 +1,25 @@
+[toolchain]
+package_manager = "yarn"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+cossack_business = "EBH9uhTpkvwhkx7sYXdDU1zwTrx5WfYVUWhWbmqXt3ma"
+crafting = "2yezAR5kHwvd8hL89RDnr9UnoHus84uzUuMsvac2ojze"
+item_nft = "HepLhfDjGV28DSL9bhHb9XNRZ2ShqYVtwJ9gFiasgt5s"
+magic_token = "7dXKNT6HXVvswbDCtzcLsAaPBa4jsPXnfhF1oP7y3Rgs"
+marketplace = "5imzGijn2kip1VWCQtuLJXNsUc6vVV8UqpZSFSd1v6aD"
+resource_manager = "8xTTGum6kEZtbn6f6vVu3go2YWLwc9r2mbvmRKY23aCj"
+search = "6n4ojCjTvG9AGu7oxqQtXPTvw1Zwfn1gEGwgrmEPVrnm"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 \"tests/**/*.ts\""
