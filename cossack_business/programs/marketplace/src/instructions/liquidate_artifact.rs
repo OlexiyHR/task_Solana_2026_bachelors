@@ -15,6 +15,7 @@ pub struct LiquidateArtifact<'info> {
     #[account(mut)]
     pub player: Signer<'info>,
 
+    /// CHECK: Authorized CPI signer
     #[account(seeds = [b"cpi_auth"], bump)]
     pub cpi_auth: UncheckedAccount<'info>,
 
@@ -58,6 +59,7 @@ pub struct LiquidateArtifact<'info> {
     )]
     pub currency_mint: InterfaceAccount<'info, MintInterface>,
 
+    /// CHECK: PDA mint authority for the currency token
     #[account(
         seeds = [b"currency_auth"],
         bump = currency_state.auth_bump,

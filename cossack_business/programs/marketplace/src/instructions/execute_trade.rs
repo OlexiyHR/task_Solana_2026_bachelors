@@ -17,6 +17,7 @@ pub struct ExecuteTrade<'info> {
     #[account(mut)]
     pub buyer: Signer<'info>,
 
+    /// CHECK: Authorized CPI signer
     #[account(seeds = [b"cpi_auth"], bump)]
     pub cpi_auth: UncheckedAccount<'info>,
 

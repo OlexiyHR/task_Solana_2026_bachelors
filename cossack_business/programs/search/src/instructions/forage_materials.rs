@@ -20,6 +20,7 @@ pub struct ForageMaterials<'info> {
     )]
     pub record: Account<'info, PlayerRecord>,
     
+    /// CHECK: Authorized CPI signer
     #[account(seeds = [b"cpi_auth"], bump)]
     pub cpi_auth: UncheckedAccount<'info>,
     

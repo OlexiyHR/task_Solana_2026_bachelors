@@ -6,7 +6,6 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-cossack_business = "EBH9uhTpkvwhkx7sYXdDU1zwTrx5WfYVUWhWbmqXt3ma"
 crafting = "2yezAR5kHwvd8hL89RDnr9UnoHus84uzUuMsvac2ojze"
 item_nft = "HepLhfDjGV28DSL9bhHb9XNRZ2ShqYVtwJ9gFiasgt5s"
 magic_token = "7dXKNT6HXVvswbDCtzcLsAaPBa4jsPXnfhF1oP7y3Rgs"
@@ -23,3 +22,17 @@ wallet = "~/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 \"tests/**/*.ts\""
+
+[test]
+startup_wait = 15000
+shutdown_wait = 2000
+upgradeable = false
+
+[test.validator]
+bind_address = "127.0.0.1"
+url = "https://api.devnet.solana.com"
+ledger = ".anchor/test-ledger"
+rpc_port = 8899
+
+[[test.validator.clone]]
+address = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"

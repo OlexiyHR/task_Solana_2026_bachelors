@@ -15,6 +15,7 @@ pub struct ForgeArtifact<'info> {
     #[account(mut)]
     pub player: Signer<'info>,
 
+    /// CHECK: Authorized CPI signer
     #[account(seeds = [b"cpi_auth"], bump)]
     pub cpi_auth: UncheckedAccount<'info>,
 
