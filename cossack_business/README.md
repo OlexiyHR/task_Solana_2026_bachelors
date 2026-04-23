@@ -2,9 +2,7 @@
 
 A fully on-chain gaming ecosystem built on Solana using the Anchor framework. Players can forage for materials, forge unique Artifact NFTs, and trade them on a decentralized marketplace for an in-game Currency.
 
-This project fulfills all requirements for the WhiteBIT "Cossack Business" technical assignment, including strict CPI-gating, PDA authority controls, Token-2022 integrations, and 100% test coverage.
-
-## 🔗 Deployed Program IDs (Devnet)
+## Deployed Program IDs (Devnet)
 
 | Program | Devnet Address |
 |---------|---------|
@@ -15,9 +13,9 @@ This project fulfills all requirements for the WhiteBIT "Cossack Business" techn
 | `crafting` (Forge) | `2yezAR5kHwvd8hL89RDnr9UnoHus84uzUuMsvac2ojze` |
 | `marketplace` (Trade) | `5imzGijn2kip1VWCQtuLJXNsUc6vVV8UqpZSFSd1v6aD` |
 
-## 🏗️ Microservices Architecture & CPI Flow
+## Microservices Architecture & CPI Flow
 
-The game comprises six independent, highly decoupled Anchor programs. Direct minting/burning of tokens or NFTs by users is strictly prohibited; all asset generation is gated through Cross-Program Invocations (CPI) using PDA authorities.
+Instead of a monolith, the ecosystem is split into six independent Anchor programs. Users can't just mint or burn tokens directly via CLI; everything is routed through Cross-Program Invocations (CPI) and protected by PDA authorities.
 
 ```text
 ┌──────────────┐       ┌──────────────┐
@@ -35,13 +33,13 @@ The game comprises six independent, highly decoupled Anchor programs. Direct min
 └──────────────┘       └──────────────┘
 ```
 
-## 🛡️ Security & Access Control
+## Security & Access Control
 
-1. **Strict CPI Gating:** Programs utilize `caller_authority` PDAs. A receiving program will only execute if the caller provides a valid PDA seed matching the expected authorized program ID.
-2. **No Direct Mint/Burn:** SPL Token-2022 mint authorities are PDAs owned by `resource_manager` and `magic_token`. Standard CLI minting is impossible.
-3. **On-Chain Timers:** Foraging cooldowns (60 seconds) are enforced securely on-chain using the `Clock` sysvar stored in the player's PDA.
+1. **CPI Gating:** Every inter-program call requires a specific caller_authority PDA signature. If the seeds don't match the expected caller program, the transaction drops.
+2. **No Direct Mint/Burn:** SPL Token-2022 mint authorities belong to the resource_manager and magic_token PDAs. Cheating the system via terminal is impossible.
+3. **On-Chain Cooldowns:** The 60-second foraging cooldown is baked into the player's PDA using the on-chain Clock sysvar.
 
-## 🛠️ Development & Deployment
+## Development & Deployment
 
 ### Prerequisites
 - Solana CLI >= 1.18
@@ -58,13 +56,15 @@ anchor test
 ```
 
 ### Devnet Deployment
-A complete bash script is provided to handle compilation, Devnet cluster deployment, and automatic on-chain PDA initialization.
+I've included a bash script that handles the compilation, Devnet cluster deployment, and automatic on-chain state initialization.
 
 ```bash
 yarn deploy:devnet
 ```
 
-## 💻 Interaction Examples
+## Client Interaction Examples
+
+Here is how the client-side interaction looks using the Anchor TS library:
 
 ### 1. Forage for Resources (Search Program)
 
@@ -81,14 +81,13 @@ await searchProgram.methods
     tokenProgram: TOKEN_2022_PROGRAM_ID,
     systemProgram: SystemProgram.programId,
   })
-  .remainingAccounts(resourceMintAndAtaAccounts) // 6 mints + 6 ATAs
+  .remainingAccounts(resourceMintAndAtaAccounts)
   .rpc();
 ```
 
 ### 2. Craft an Artifact NFT (Crafting Program)
 
 ```typescript
-// Craft Recipe 0 (e.g., Cossack Saber)
 await craftingProgram.methods
   .craftItem(0, Buffer.from(neededResourceIds))
   .accountsStrict({
